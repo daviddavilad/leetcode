@@ -1,2 +1,16 @@
-# leetcode
-LeetCode solutions and algorithm practice covering data structures, algorithms, dynamic programming, and coding interview preparation.
+# LeetCode
+
+Data structures, algorithms, and coding interview solutions developed through LeetCode practice.
+
+## Topics
+
+- Arrays & Hashing
+- Two Pointers
+- Stack
+- Binary Search
+- Dynamic Programming
+- Graphs
+- Trees
+- Heaps
+- Linked Lists
+- Greedy
