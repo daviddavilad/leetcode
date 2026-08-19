@@ -13,4 +13,3 @@ class Solution:
             if clean[i] != clean[len(clean) - 1 - i]:
                 return False
         return True
-
