@@ -38,6 +38,10 @@ def graphql(query, variables):
     data = response.json()
 
     if "errors" in data:
+        print("GRAPHQL ERRORS:")
+        print(data["errors"])
+        print("FULL RESPONSE:")
+        print(data)
         raise RuntimeError(data["errors"])
 
     return data["data"]
