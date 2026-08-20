@@ -22,14 +22,23 @@ headers = {
 
 
 def graphql(query, variables):
+    response = requests.post(
+        LEETCODE_URL,
+        json={
+            "query": query,
+            "variables": variables,
+        },
+        cookies=cookies,
+        headers=headers,
+        timeout=30,
+    )
+
     response.raise_for_status()
 
     data = response.json()
 
-    print("GraphQL response:", data)
-
     if "errors" in data:
-        raise RuntimeError(f"LeetCode GraphQL error: {data['errors']}")
+        raise RuntimeError(data["errors"])
 
     return data["data"]
 
