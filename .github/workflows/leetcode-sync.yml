@@ -24,13 +24,13 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Sync LeetCode submissions
+      - name: Sync LeetCode solutions
         env:
           LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
           LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
         run: python scripts/sync_leetcode.py
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -38,8 +38,8 @@ jobs:
           git add .
 
           if git diff --cached --quiet; then
-            echo "No new solutions to commit."
+            echo "No changes to commit."
           else
-            git commit -m "[LeetCode Sync] Update solutions"
+            git commit -m "Sync LeetCode solutions"
             git push
           fi
