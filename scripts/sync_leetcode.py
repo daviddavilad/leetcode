@@ -22,23 +22,14 @@ headers = {
 
 
 def graphql(query, variables):
-    response = requests.post(
-        LEETCODE_URL,
-        json={
-            "query": query,
-            "variables": variables,
-        },
-        cookies=cookies,
-        headers=headers,
-        timeout=30,
-    )
-
     response.raise_for_status()
 
     data = response.json()
 
+    print("GraphQL response:", data)
+
     if "errors" in data:
-        raise RuntimeError(data["errors"])
+        raise RuntimeError(f"LeetCode GraphQL error: {data['errors']}")
 
     return data["data"]
 
@@ -189,6 +180,13 @@ def get_folder_name(problem):
 # ---------------------------------------------------------
 
 submissions = get_all_accepted_submissions()
+
+if submissions is None:
+    raise RuntimeError(
+        "LeetCode returned null for recentAcSubmissionList. "
+        "This usually means the authentication/session is invalid "
+        "or the GraphQL request is being rejected."
+    )
 
 print()
 print(f"Found {len(submissions)} unique accepted problems.")
