@@ -40,8 +40,6 @@ def graphql(query, variables):
     if "errors" in data:
         print("GRAPHQL ERRORS:")
         print(data["errors"])
-        print("FULL RESPONSE:")
-        print(data)
         raise RuntimeError(data["errors"])
 
     return data["data"]
@@ -94,9 +92,25 @@ def get_all_accepted_submissions():
             },
         )
 
-        result = data["submissionList"]
+        if data is None:
+            raise RuntimeError("LeetCode returned no GraphQL data.")
 
-        submissions = result["submissions"]
+        result = data.get("submissionList")
+
+        if result is None:
+            raise RuntimeError(
+                f"submissionList is None. GraphQL data keys: {list(data.keys())}. "
+                f"Full data: {data}"
+            )
+
+        submissions = result.get("submissions")
+
+        if submissions is None:
+            raise RuntimeError(
+                f"submissions is None. submissionList keys: {list(result.keys())}. "
+                f"lastKey={result.get('lastKey')}, "
+                f"hasNext={result.get('hasNext')}"
+            )
 
         for submission in submissions:
             if submission["statusDisplay"] != "Accepted":
@@ -104,8 +118,8 @@ def get_all_accepted_submissions():
 
             slug = submission["titleSlug"]
 
-            # Because we're walking newest -> oldest, the first
-            # accepted submission we see for a problem is the latest.
+            # We're walking newest -> oldest, so the first
+            # accepted submission for a problem is the latest.
             if slug not in accepted:
                 accepted[slug] = submission
 
@@ -193,13 +207,6 @@ def get_folder_name(problem):
 # ---------------------------------------------------------
 
 submissions = get_all_accepted_submissions()
-
-if submissions is None:
-    raise RuntimeError(
-        "LeetCode returned null for recentAcSubmissionList. "
-        "This usually means the authentication/session is invalid "
-        "or the GraphQL request is being rejected."
-    )
 
 print()
 print(f"Found {len(submissions)} unique accepted problems.")
