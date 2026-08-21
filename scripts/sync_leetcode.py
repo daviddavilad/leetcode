@@ -18,6 +18,7 @@ headers = {
     "Origin": "https://leetcode.com",
     "Referer": "https://leetcode.com/",
     "User-Agent": "Mozilla/5.0",
+    "X-CSRFToken": csrf,
 }
 
 
